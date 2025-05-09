@@ -4,6 +4,7 @@ A real-time delivery tracking web application powered by **vCore based Azure Cos
 
 This app simulates **delivery agents 🛵** moving toward **Delivery Locations 🏠** using real map data. Location updates are written directly to **MongoDB vCore**, and **Debezium** captures these changes via change streams and forwards them to **Kafka**. The frontend consumes these updates from Kafka to display live movement on the map.
 
+[Architecture Flow](./architecture/Architecture_CS_Debezium.png)
 
 ## Pre-requisites
 
