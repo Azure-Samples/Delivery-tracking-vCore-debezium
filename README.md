@@ -1,6 +1,6 @@
 # Delivery Tracking System using Cosmos DB vCore Change Streams and Kafka-Debezium
 
-A real-time delivery tracking web application powered by **vCore based Azure CosmosDB for MongoDB utlizing Change Streams**, integrated with **Kafka** using the [Debezium MongoDB Connector](https://debezium.io/documentation/reference/stable/connectors/mongodb.html).
+A real-time delivery tracking web application powered by **vCore based Azure CosmosDB for MongoDB utlizing Change Streams**, integrated with **Kafka** using the [Debezium MongoDB Connector](https://debezium.io/releases/2.5/).
 
 This app simulates **delivery agents 🛵** moving toward **Delivery Locations 🏠** using real map data. Location updates are written directly to **MongoDB vCore**, and **Debezium** captures these changes via change streams and forwards them to **Kafka**. The frontend consumes these updates from Kafka to display live movement on the map.
 
