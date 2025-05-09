@@ -30,7 +30,7 @@ async function registerMongoConnector() {
       return;
     }
 
-    console.error('❌ Error registering connector:', errData || error.message);
+    console.error('Retrying registering connector:', errData || error.message);
 
     await delay(4000);
     await registerMongoConnector();
