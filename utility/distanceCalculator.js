@@ -20,7 +20,17 @@ function getDistanceFromLatLonInKm(coords1, coords2) {
     return deg * (Math.PI / 180);
   }
 
-  console.log();
+  function getTravelTime(distanceKm, speedKmph) {
+  if (speedKmph <= 0) return 'Invalid speed';
 
-  module.exports = { getDistanceFromLatLonInKm };
+  const timeHours = distanceKm / speedKmph;
+  const totalSeconds = timeHours * 3600;
+
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.round(totalSeconds % 60);
+
+  return `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+}
+
+  module.exports = { getDistanceFromLatLonInKm, getTravelTime };
   

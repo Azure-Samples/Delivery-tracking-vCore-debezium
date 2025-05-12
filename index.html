@@ -27,8 +27,9 @@
       <tr>
         <th>Name</th>
         <th>Time Elapsed</th>
+        <th>Time to Dest</th>
         <th>Distance to Delivery Location (km)</th>
-        <th>Total Distance Covered (km)</th>
+        <th>Total Distance (km)</th>
         <th>Start Coordinates</th>
         <th>Last Coordinates</th>
         <th>Optimal Path Choosen</th>
@@ -102,7 +103,7 @@
       }).addTo(map).bindTooltip(
             `<div style="font-size: 7px;">
               ${driverDetails.driverName} 🛵
-              ${driverDetails.time_elapsed ? `<br>Time elapsed: ${driverDetails.time_elapsed}` : ''}
+              ${driverDetails.time_to_reach_dest ? `<br>Time to dest: ${driverDetails.time_to_reach_dest}` : ''}
             </div>`,
             { permanent: true, direction: 'top', offset: [0, -10] }
         );
@@ -211,7 +212,7 @@
 
         const tooltip = document.getElementById('drivers-tooltip');
         tooltip.textContent = driversTimeAndDist
-          .map(driver => `${driver.driverName}: Dist Left ${driver.distance_covered} km, Time Elapsed ${driver.time_elapsed}`)
+          .map(driver => `${driver.driverName}: Dist Left ${driver.distance_covered} km, Time Elapsed: ${driver.time_elapsed}, Time to dest: ${driver.time_to_reach_dest}`)
           .join('\n');
       } catch (err) {
         console.error("Error fetching consumer info:", err);
@@ -243,6 +244,7 @@
           row.innerHTML = `
             <td>${driver} 🛵</td>
             <td>${info.time_elapsed}</td>
+            <td>${info.time_to_reach_dest}</td>
             <td>${info.distance_covered} km</td>
             <td>${info.total_dist.toFixed(2)} km</td>
             <td>[${info.start_coord[0]}, ${info.start_coord[1]}]</td>

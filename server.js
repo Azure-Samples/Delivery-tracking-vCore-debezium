@@ -8,7 +8,7 @@ const { Kafka } = require('kafkajs');
 
 const { allDeliveryDriversMap, driversOptimalPathInfo } = require('./utility/randomPaths');
 const { deliverDriversCoordinates } = require('./datasets/deliveryDriversCoordinates');
-const { getDistanceFromLatLonInKm } = require('./utility/distanceCalculator');
+const { getDistanceFromLatLonInKm, getTravelTime } = require('./utility/distanceCalculator');
 const { registerMongoConnector } = require('./utility/registerMongoConnector');
 
 const app = express();
@@ -111,20 +111,21 @@ async function initializeKafkaConsumer() {
   
           driversTimeAndDist[name].last_coord = coordsNow
           driversTimeAndDist[name].distance_covered = getDistanceFromLatLonInKm(driversTimeAndDist[name].start_coord, driversTimeAndDist[name].last_coord).toFixed(2); 
-
+          driversTimeAndDist[name].time_to_reach_dest = getTravelTime(driversTimeAndDist[name].distance_covered,30)
         } else {
           const coordHome = deliverDriversCoordinates.find(d => d.name === name).optimalPath.at(-1);
-          const latLngArray = [coordHome.lat, coordHome.lng];
+          const latLngArrayHomeDest = [coordHome.lat, coordHome.lng];
           driversTimeAndDist[name] = {
             start_time: now,
             last_update_time: now,
             time_elapsed: 0.00,
             distance_covered: 0,
-            start_coord: latLngArray,
+            start_coord: latLngArrayHomeDest,
             last_coord: coordsNow,
             initial_driver_start: coordsNow,
-            total_dist: getDistanceFromLatLonInKm(coordsNow, latLngArray),
+            total_dist: getDistanceFromLatLonInKm(coordsNow, latLngArrayHomeDest),
             optimal: optimal,
+            time_to_reach_dest: getTravelTime(getDistanceFromLatLonInKm(coordsNow, latLngArrayHomeDest),30)
           };
         }
 
@@ -132,6 +133,7 @@ async function initializeKafkaConsumer() {
           driverName,
           time_elapsed: data.time_elapsed,
           distance_covered: data.distance_covered,
+          time_to_reach_dest: data.time_to_reach_dest
         }));
 
         console.log('📍Kafka message:', refineMessage);

@@ -399,3 +399,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Node.js environment files
+.env
+node_modules/
+
+# Mongo connector config
+mongo-connector.json
