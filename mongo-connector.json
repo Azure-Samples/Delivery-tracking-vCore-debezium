@@ -4,7 +4,7 @@
     "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
     "tasks.max": "1",
     "mongodb.connection.string": "mongodb+srv://<username>:<password>@<clustername>.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000",
-    "collection.include.list": "<vCore DB Name>.<vCore Collection Name>",
+    "collection.include.list": "hmm.<vCore Collection Name>",
     "topic.prefix": "maps"
   }
 }
