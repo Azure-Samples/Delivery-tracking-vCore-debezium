@@ -104,7 +104,8 @@
             `<div style="font-size: 7px;">
               ${driverDetails.driverName} 🛵
               ${driverDetails.time_to_reach_dest ? `<br>Time to dest: ${driverDetails.time_to_reach_dest}` : ''}
-            </div>`,
+              ${driverDetails.distance_covered ? `<br>Dist Remaining: ${driverDetails.distance_covered} km` : ''} 
+              </div>`,
             { permanent: true, direction: 'top', offset: [0, -10] }
         );
       
@@ -114,13 +115,7 @@
           html: '<div style="font-size: 30px;">🏠</div>',
           iconAnchor: [30, 30]
         })
-      }).addTo(map).bindTooltip(
-          `<div style="font-size: 7px;">
-            ${driverDetails.driverName} Delivery Location 🏠
-            ${driverDetails.distance_covered ? `<br>Dist Remaining: ${driverDetails.distance_covered} km` : ''}
-          </div>`,
-          { permanent: true, direction: 'top', offset: [0, -10] }
-        );
+      }).addTo(map);
 
       if (showDeviated) {
         deviatedRoute[driverDetails.driverName] = L.polyline(deviatedCoords, { color: 'red', weight: 3, opacity: 0.7 }).addTo(map);

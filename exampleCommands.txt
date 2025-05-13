@@ -23,3 +23,11 @@ docker exec -it kafka kafka-console-consumer --bootstrap-server kafka:7777 --top
 docker stop debezium-connect
 
 docker start debezium-connect
+
+docker stop kafka
+
+docker start kafka
+
+curl -X DELETE http://localhost:8083/connectors/mongodb-source-connector
+
+curl -X POST -H "Content-Type: application/json" --data @mongo-connector.json http://localhost:8083/connectors
