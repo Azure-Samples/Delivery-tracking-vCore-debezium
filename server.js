@@ -51,7 +51,8 @@ async function initializeMongoDB() {
         name: 'Driver Bob',
         lat: 51.504148054725356,
         lng: -0.09527206420898439,
-        optimal: true
+        optimal: true,
+        eventCounter:1
       });
     }
   } catch (err) {
@@ -84,13 +85,14 @@ async function initializeKafkaConsumer() {
           parsedMessage.after = JSON.parse(parsedMessage.after);
         }
 
-        const { lat, lng, name, optimal } = parsedMessage.after;
+        const { lat, lng, name, optimal, eventCounter } = parsedMessage.after;
         
         const refineMessage = {
           lat,
           lng,
           name,
           optimal,
+          eventCounter,
           db: parsedMessage.source.db,
           collection: parsedMessage.source.collection,
           ts_ms: parsedMessage.ts_ms,
@@ -125,7 +127,7 @@ async function initializeKafkaConsumer() {
             initial_driver_start: coordsNow,
             total_dist: getDistanceFromLatLonInKm(coordsNow, latLngArrayHomeDest),
             optimal: optimal,
-            time_to_reach_dest: getTravelTime(getDistanceFromLatLonInKm(coordsNow, latLngArrayHomeDest),30)
+            time_to_reach_dest: getTravelTime(getDistanceFromLatLonInKm(coordsNow, latLngArrayHomeDest),15)
           };
         }
 
@@ -181,6 +183,7 @@ app.get('/start-delivery', async (req, res) => {
             lat: driverCoordinate.lat,
             lng: driverCoordinate.lng,
             optimal: driverCoordinate.optimal,
+            eventCounter:driverCoordinate.eventCounter
           },
         }
       );
@@ -193,7 +196,7 @@ app.get('/start-delivery', async (req, res) => {
       }
 
       // Wait for 100 ms before next iteration
-      await delay(100);
+      await delay(200);
     }
 
     didDeliveryEnd = true;
@@ -202,6 +205,11 @@ app.get('/start-delivery', async (req, res) => {
     console.error('❌ Error updating coordinates:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.get('/skip-to-live', (req, res) => {
+  if (consumerCoordinates.length !== 0) consumerCoordinates.splice(0, consumerCoordinates.length - 1);;
+  res.json("Skipped to live");
 });
 
 app.get('/producer-info', (req, res) => {

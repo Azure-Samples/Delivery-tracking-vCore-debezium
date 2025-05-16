@@ -16,14 +16,6 @@ docker compose down -v
 file:///C:/Desktop/Nodejs/multiDeliveryTracking/index.html
 
 
-docker exec -it kafka kafka-topics --bootstrap-server localhost:7777 --list
-
-docker exec -it kafka kafka-console-consumer --bootstrap-server kafka:7777 --topic my_connect_offsets --from-beginning --property print.key=true --property print.value=true
-
-docker stop debezium-connect
-
-docker start debezium-connect
-
 docker stop kafka
 
 docker start kafka

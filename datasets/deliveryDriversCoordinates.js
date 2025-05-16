@@ -222,6 +222,46 @@ const deliverDriversCoordinates = [
       ],
     },
   ];
-  
-  module.exports = { deliverDriversCoordinates }; 
+
+// increase datasets 
+const increment = 0.000001;
+const lagCounter = 1;
+
+//Generates lagged coordinates for a given path.
+function generateLaggedPath(path) {
+  const expandedPath = [];
+
+  path.forEach(point => {
+    expandedPath.push(point);
+    for (let i = 1; i <= lagCounter; i++) {
+      expandedPath.push({
+        lat: +(point.lat + i * increment).toFixed(6),
+        lng: +(point.lng + i * increment).toFixed(6)
+      });
+    }
+  });
+
+  return expandedPath;
+}
+
+//Removes duplicate points from a path.
+function removeDuplicatePoints(path) {
+  const seen = new Set();
+  return path.filter(point => {
+    const key = JSON.stringify(point);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+deliverDriversCoordinates.forEach(driver => {
+  const expandedOptimalPath = generateLaggedPath(driver.optimalPath);
+  driver.optimalPath = removeDuplicatePoints(expandedOptimalPath);
+
+  const expandedDeviatedPath = generateLaggedPath(driver.deviatedPath);
+  driver.deviatedPath = removeDuplicatePoints(expandedDeviatedPath);
+});
+
+module.exports = { deliverDriversCoordinates }; 
   

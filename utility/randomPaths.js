@@ -38,6 +38,10 @@ function interleavePreservingOrder(lists) {
 
 // Main logic
 const selectedPaths = deliverDriversCoordinates.map(getRandomPath);
-const allDeliveryDriversMap = interleavePreservingOrder(selectedPaths);
+let eventCounter = 1;
+const allDeliveryDriversMap = interleavePreservingOrder(selectedPaths).map(point => ({
+  ...point,
+  eventCounter: eventCounter++
+}));
 
 module.exports = { allDeliveryDriversMap, driversOptimalPathInfo };
