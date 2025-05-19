@@ -5,11 +5,11 @@ body, html {
     font-family: Arial, sans-serif;
 }
 .container {
-    height: calc(100%); /* remaining height after header */
-    display: flex;
+    height: 100%; 
     flex-direction: column;
 }
 .map-section {
+    height: 55%;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -26,6 +26,7 @@ body, html {
     height: 255px
 }
 .info-section {
+    height: 45%;
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -68,14 +69,14 @@ body, html {
 }
 
 .producer-text-area {
-    height: 203px; /* Fix height */
+    height: 100%;
     border: 1px solid #ccc;
     padding: 5px;
     overflow-y: auto; /* Enables scrolling inside */
     background-color: #f8f9fa;
 }
 .consumer-text-area {
-    height: 180px; /* Fix height */
+    height: 100%;
     border: 1px solid #ccc;
     padding: 5px;
     overflow-y: auto; /* Enables scrolling inside */
