@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Dependencies - never commit these
+node_modules/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -400,5 +403,3 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# Mongo connector config
-mongo-connector.json

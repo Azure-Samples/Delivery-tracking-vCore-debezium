@@ -6,7 +6,7 @@ networks:
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
     restart: always
     networks:
@@ -18,7 +18,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
     restart: always
     depends_on:
@@ -65,12 +65,19 @@ services:
       CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
     volumes:
       - ./mongo-connector.json:/kafka/config/mongo-connector.json
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8083/connectors || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
 
   connector-init:
     image: curlimages/curl:latest
     container_name: connector-init
     depends_on:
-      - kafka-connect
+      kafka-connect:
+        condition: service_healthy
     networks:
       - kafka_network
     entrypoint: >
@@ -94,7 +101,10 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - connector-init
+      connector-init:
+        condition: service_started
+      kafka-connect:
+        condition: service_healthy
     ports:
       - "3000:3000" #change it in .env if altered here
     networks:

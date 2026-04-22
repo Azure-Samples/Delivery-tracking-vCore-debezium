@@ -1,0 +1,12 @@
+{
+  "name": "mongodb-source-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+    "mongodb.connection.string": "<YOUR_MONGODB_CONNECTION_URI>",
+    "topic.prefix": "<YOUR_TOPIC_PREFIX>",
+    "collection.include.list": "<YOUR_DB_NAME>.<YOUR_COLLECTION_NAME>",
+    "mongodb.ssl.enabled": "true",
+    "heartbeat.interval.ms": "0",
+    "capture.mode": "change_streams_update_full"
+  }
+}
