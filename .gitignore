@@ -6,6 +6,10 @@
 # Dependencies - never commit these
 node_modules/
 
+# Secrets - never commit real credentials
+.env
+mongo-connector.json
+
 # User-specific files
 *.rsuser
 *.suo
